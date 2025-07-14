@@ -2,6 +2,7 @@
   "name": "my-first-repo",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://anakincode9.github.io/my-first-repo/",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
