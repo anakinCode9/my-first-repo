@@ -32,10 +32,6 @@ jobs:
           at: ~/artifacts
 
       - run:
-          name: Install jq
-          command: sudo apt-get update && sudo apt-get install -y jq
-
-      - run:
           name: Assume deploy role
           command: |
             CREDS_JSON=$(aws sts assume-role \
