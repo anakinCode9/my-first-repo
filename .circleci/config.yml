@@ -30,20 +30,28 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/artifacts
-      - run:
-          name: Assume role and deploy
-          command: |
-            sudo apt-get update && sudo apt-get install -y jq
 
-            CREDS=$(aws sts assume-role \
+      - run:
+          name: Install jq
+          command: sudo apt-get update && sudo apt-get install -y jq
+
+      - run:
+          name: Assume deploy role
+          command: |
+            CREDS_JSON=$(aws sts assume-role \
               --role-arn arn:aws:iam::915920435036:role/circleci-deploy-role \
               --role-session-name circleci-session)
 
-            export AWS_ACCESS_KEY_ID=$(echo "$CREDS" | jq -r .Credentials.AccessKeyId)
-            export AWS_SECRET_ACCESS_KEY=$(echo "$CREDS" | jq -r .Credentials.SecretAccessKey)
-            export AWS_SESSION_TOKEN=$(echo "$CREDS" | jq -r .Credentials.SessionToken)
+            export AWS_ACCESS_KEY_ID=$(echo $CREDS_JSON | jq -r .Credentials.AccessKeyId)
+            export AWS_SECRET_ACCESS_KEY=$(echo $CREDS_JSON | jq -r .Credentials.SecretAccessKey)
+            export AWS_SESSION_TOKEN=$(echo $CREDS_JSON | jq -r .Credentials.SessionToken)
 
-            aws s3 sync ~/artifacts s3://circleci-bucket-x/ --region eu-north-1 --delete
+            echo "🪪 Role assumed successfully"
+
+      - run:
+          name: Deploy to S3
+          command: |
+            aws s3 sync ~/artifacts s3://circleci-bucket-x/ --delete --region eu-north-1
 
 workflows:
   build-and-deploy:
