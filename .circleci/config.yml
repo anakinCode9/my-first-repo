@@ -1,3 +1,5 @@
+# This config was automatically generated from your source code
+# Stacks detected: cicd:github-actions:.github/workflows,deps:node:.
 version: 2.1
 
 orbs:
@@ -17,7 +19,7 @@ jobs:
           name: Copy build artifacts
           command: |
             mkdir -p ~/artifacts
-            cp -R out ~/artifacts
+            cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
       - persist_to_workspace:
           root: ~/artifacts
           paths:
