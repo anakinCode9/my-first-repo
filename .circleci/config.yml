@@ -1,5 +1,3 @@
-# This config was automatically generated from your source code
-# Stacks detected: cicd:github-actions:.github/workflows,deps:node:.
 version: 2.1
 
 orbs:
@@ -32,6 +30,23 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/artifacts
+
+      - run:
+          name: Install jq
+          command: sudo apt-get update && sudo apt-get install -y jq
+
+      - run:
+          name: Assume deploy role
+          command: |
+            CREDS_JSON=$(aws sts assume-role \
+              --role-arn arn:aws:iam::915920435036:role/circleci-deploy-role \
+              --role-session-name circleci-session)
+
+            export AWS_ACCESS_KEY_ID=$(echo $CREDS_JSON | jq -r .Credentials.AccessKeyId)
+            export AWS_SECRET_ACCESS_KEY=$(echo $CREDS_JSON | jq -r .Credentials.SecretAccessKey)
+            export AWS_SESSION_TOKEN=$(echo $CREDS_JSON | jq -r .Credentials.SessionToken)
+
+            echo "🪪 Role assumed successfully"
 
       - run:
           name: S3 debug: list all buckets
