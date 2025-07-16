@@ -17,7 +17,7 @@ jobs:
           name: Copy build artifacts
           command: |
             mkdir -p ~/artifacts
-            cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
+            cp -R out/* ~/artifacts
       - persist_to_workspace:
           root: ~/artifacts
           paths:
