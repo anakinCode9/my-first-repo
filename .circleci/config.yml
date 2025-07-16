@@ -35,7 +35,7 @@ jobs:
       - run:
           name: Deploy to S3
           command: |
-            aws s3 sync ~/artifacts s3://df9089a0df9g --delete --region eu-north-1
+            aws s3 sync ~/artifacts s3://df9089a0df9g/ --delete --region eu-north-1
 
 workflows:
   build-and-deploy:
