@@ -47,11 +47,7 @@ jobs:
             export AWS_SESSION_TOKEN=$(echo $CREDS_JSON | jq -r .Credentials.SessionToken)
 
             echo "🪪 Role assumed successfully"
-
-      - run:
-          name: S3 debug: list target bucket
-          command: aws s3 ls s3://df9089a0df9g/ --region eu-north-1 || echo "❌ Bucket not accessible"
-
+            
       - run:
           name: Deploy to S3
           command: |
