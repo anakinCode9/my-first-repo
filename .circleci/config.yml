@@ -49,10 +49,6 @@ jobs:
             echo "🪪 Role assumed successfully"
 
       - run:
-          name: S3 debug: list all buckets
-          command: aws s3 ls --region eu-north-1 || echo "❌ Failed to list buckets"
-
-      - run:
           name: S3 debug: list target bucket
           command: aws s3 ls s3://df9089a0df9g/ --region eu-north-1 || echo "❌ Bucket not accessible"
 
