@@ -43,7 +43,7 @@ jobs:
             export AWS_SECRET_ACCESS_KEY=$(echo "$CREDS" | jq -r .Credentials.SecretAccessKey)
             export AWS_SESSION_TOKEN=$(echo "$CREDS" | jq -r .Credentials.SessionToken)
 
-            aws s3 sync ~/artifacts s3://df9089a0df9g/ --region eu-north-1 --delete
+            aws s3 sync ~/artifacts s3://circleci-bucket-x/ --region eu-north-1 --delete
 
 workflows:
   build-and-deploy:
