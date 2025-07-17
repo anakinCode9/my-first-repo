@@ -25,30 +25,21 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/aws:2023.12
+      - image: node:18
     steps:
-      - checkout
       - attach_workspace:
           at: ~/artifacts
-
       - run:
-          name: Assume deploy role
-          command: |
-            CREDS_JSON=$(aws sts assume-role \
-              --role-arn arn:aws:iam::915920435036:role/circleci-deploy-role \
-              --role-session-name circleci-session)
-
-            echo "export AWS_ACCESS_KEY_ID=$(echo $CREDS_JSON | jq -r .Credentials.AccessKeyId)" >> $BASH_ENV
-            echo "export AWS_SECRET_ACCESS_KEY=$(echo $CREDS_JSON | jq -r .Credentials.SecretAccessKey)" >> $BASH_ENV
-            echo "export AWS_SESSION_TOKEN=$(echo $CREDS_JSON | jq -r .Credentials.SessionToken)" >> $BASH_ENV
-
-            echo "🪪 Role assumed and environment prepared"
-
+          name: Install wrangler
+          command: npm install -g wrangler
       - run:
-          name: Deploy to S3
+          name: Deploy to Cloudflare Pages
           command: |
-            aws s3 sync ~/artifacts s3://circleci-bucket-x/ --delete --region eu-north-1
-
+            wrangler pages deploy ~/artifacts \
+              --project-name=my-new-static-site \
+              --commit-dirty=true
+        environment:
+          CLOUDFLARE_API_TOKEN: $CLOUDFLARE_API_TOKEN
 
 workflows:
   build-and-deploy:
