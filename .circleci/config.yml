@@ -38,8 +38,8 @@ jobs:
             wrangler pages deploy ~/artifacts \
               --project-name=my-new-static-site \
               --commit-dirty=true
-        environment:
-          CLOUDFLARE_API_TOKEN: $CLOUDFLARE_API_TOKEN
+          environment:
+            CLOUDFLARE_API_TOKEN: CLOUDFLARE_API_TOKEN
 
 workflows:
   build-and-deploy:
