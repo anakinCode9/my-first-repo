@@ -35,11 +35,9 @@ jobs:
       - run:
           name: Deploy to Cloudflare Pages
           command: |
-            CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN wrangler pages deploy ~/artifacts \
+            wrangler pages deploy ~/artifacts \
               --project-name=my-new-static-site \
               --commit-dirty=true
-          environment:
-            CLOUDFLARE_API_TOKEN: CLOUDFLARE_API_TOKEN
 
 workflows:
   build-and-deploy:
