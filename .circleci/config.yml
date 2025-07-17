@@ -25,7 +25,7 @@ jobs:
 
   deploy:
     docker:
-      - image: node:18
+      - image: node:20
     steps:
       - attach_workspace:
           at: ~/artifacts
